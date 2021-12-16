@@ -46,7 +46,7 @@ if __name__=="__main__":
     save_dir="save_frame"# assing the save direactory 
     
     for path in video_path:
-        genarate_frame(path,save_dir,gap=10)
+        genarate_frame(path,save_dir,gap=30)
         
         
     
