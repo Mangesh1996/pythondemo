@@ -38,15 +38,14 @@ def genarate_frame(path,save_path,gap=30):
             if idx % gap == 0:
                 cv2.imwrite(f"{save_path}/{idx}.jpg",frame)
         idx+=1
-
-
+    
 
 if __name__=="__main__":
     video_path=glob("source_video/*")#assing the video path
     save_dir="save_frame"# assing the save direactory 
-    
+    gap=int(input("enter the frame"))
     for path in video_path:
-        genarate_frame(path,save_dir,gap=30)
+        genarate_frame(path,save_dir,gap)
         
         
     

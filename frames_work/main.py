@@ -18,7 +18,7 @@ def createdire(path):
         print(f"File already exist {path}")
         
 #making a function for generate the frame through video
-def genarate_frame(path,save_path):
+def genarate_frame(path,save_path,gap):
     name=path.split("/")[-1].split(".")[0] # extract the name of video for video
     save_path=os.path.join(save_path,name) # define the path of saving 
     
@@ -31,8 +31,11 @@ def genarate_frame(path,save_path):
         if res == False:
             cap.release()
             break
-        else:
+        if idx ==0:
             cv2.imwrite(f"{save_path}/{idx}.jpg",frame)
+        else:
+            if idx % gap == 0:
+                cv2.imwrite(f"{save_path}/{idx}.jpg",frame)
         idx+=1
 
 
@@ -40,9 +43,9 @@ def genarate_frame(path,save_path):
 if __name__=="__main__":
     video_path=glob("source_video/*")#assing the video path
     save_dir="save_frame"# assing the save direactory 
-    
+    gap=int(input("enter the video frame speed:- "))
     for path in video_path:
-        genarate_frame(path,save_dir)
-        break
+        genarate_frame(path,save_dir,gap)
+        
         
     
