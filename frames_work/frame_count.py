@@ -17,11 +17,14 @@ def frame_count(name):
     if int(major_ver)<3:
         #store the frame rate the fps variable 
         fps=video.get(cv2.cv.CV_CAP_PROP_FPS)
-        print("Frames per second using video.get(cv2.cv.CV_CAP_PROP_FPS): {0}".format(int(fps)))
+        #print("Frames per second using video.get(cv2.cv.CV_CAP_PROP_FPS): {0}".format(int(fps)))
+        return int(fps)
     else:
         fps=video.get(cv2.CAP_PROP_FPS)
-        print("Frames per second using video.get(cv2.CAP_PROP_FPS) : {0}".format(int(fps)))  
-    #all condition true than close the video   
+        #print("Frames per second using video.get(cv2.CAP_PROP_FPS) : {0}".format(int(fps))) 
+        return int(fps) 
+    #all condition true than close the video
+       
     video.release()
 
 if __name__=="__main__":
