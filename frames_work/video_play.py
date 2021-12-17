@@ -4,7 +4,7 @@
 # import cv2 libarary 
 import cv2
 import os
-
+from glob import glob
 
 
 #create function to play video
@@ -35,7 +35,8 @@ def play_video(path):
     cv2.destroyAllWindows()
 
 if __name__=="__main__":
-    source_path=os.path.join(os.getcwd("source_video"))
+    # source_path=os.path.join(os.getcwd(),"source_video")
     # call the function 
-    play_video(source_path)
-        
+    source_path=glob("source_video/*")
+    for path in source_path:
+        play_video(path)
