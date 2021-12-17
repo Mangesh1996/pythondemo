@@ -8,6 +8,7 @@
 import cv2
 import os
 from glob import glob
+from frame_count import frame_count
 
 #making the function for creating direactory
 def createdire(path):
@@ -43,8 +44,10 @@ def genarate_frame(path,save_path,gap):
 if __name__=="__main__":
     video_path=glob("source_video/*")#assing the video path
     save_dir="save_frame"# assing the save direactory 
-    gap=int(input("enter the video frame speed:- "))
+    #gap=int(input("enter the video frame speed:- "))
+    
     for path in video_path:
+        gap=frame_count(path)
         genarate_frame(path,save_dir,gap)
         
         
