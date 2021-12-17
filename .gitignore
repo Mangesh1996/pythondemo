@@ -5,3 +5,7 @@ __pycache__
 /frames_work/save_frame
 /frames_work/source_video
 /frames_work/venv
+/ffmpeg/frame_dire
+/ffmpeg/source_video
+/ffmpeg/test.py
+/ffmpeg/venv
