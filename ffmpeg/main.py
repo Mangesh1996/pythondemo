@@ -6,7 +6,10 @@ user can chosse the source path and save path
 # import the libary to necessary
 import os
 import tkinter as tk
+import sys
+from time import sleep
 from tkinter import filedialog
+from tqdm import tqdm
 
 # creating exception to handle error
 try:
@@ -24,6 +27,10 @@ try:
     #save path in save_path 
     save_path=filedialog.askdirectory(title="Select Folder to save frames")
     #run the command using os.system 
-    os.system(f"ffmpeg -i {sourcepath} -vf fps={user_fps} {save_path}/img-%03d.jpg -loglevel quiet")#ffmped are convert video to frame 
+    for i in tqdm(range(1),desc="Loading...."):
+        os.system(f"ffmpeg -i {sourcepath} -vf fps={user_fps} {save_path}/img-%03d.jpg -loglevel quiet")#ffmped are convert video to frame
+        sleep(0.01)
+    print("\n")
+    print("Video to frame converting done ")
 except Exception:
     print("Your are Not select properly file ")
