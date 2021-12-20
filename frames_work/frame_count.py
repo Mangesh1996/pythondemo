@@ -30,4 +30,4 @@ def frame_count(name):
 if __name__=="__main__":
       source_path=glob("source_video/*")
       for path in source_path:
-        frame_count(path)
+        print(frame_count(path))

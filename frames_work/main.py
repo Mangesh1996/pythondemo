@@ -9,6 +9,7 @@ import cv2
 import os
 from glob import glob
 from time import sleep
+import time
 import sys
 from frame_count import frame_count
 
@@ -29,6 +30,7 @@ def genarate_frame(path,save_path,gap):
             for z in range(21):
                   sleep(1.0)
                   sys.stdout.write("\r")
+                  start=time.time()
                   cap=cv2.VideoCapture(path)
                   idx=0
                   while True:
@@ -42,12 +44,15 @@ def genarate_frame(path,save_path,gap):
                               if idx % gap == 0:
                                     cv2.imwrite(f"{save_path}/{idx}.jpg",frame)
                         idx+=1
+                  end=time.time()
+            
                   sys.stdout.write("[%-20s]%d%%" %( "="* z,5*z) )
             sys.stdout.flush()
             sleep(0.2)
             print("\n")
             print(f"Video to Frame converting done frame rate is {gap}")
             print("\n")
+            print(round(start-end))
 
 
 if __name__=="__main__":
