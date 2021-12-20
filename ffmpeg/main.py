@@ -24,6 +24,6 @@ try:
     #save path in save_path 
     save_path=filedialog.askdirectory(title="Select Folder to save frames")
     #run the command using os.system 
-    os.system(f"ffmpeg -i {sourcepath} -vf fps={user_fps} {save_path}/img-%03d.jpg")#ffmped are convert video to frame 
+    os.system(f"ffmpeg -i {sourcepath} -vf fps={user_fps} {save_path}/img-%03d.jpg -loglevel quiet")#ffmped are convert video to frame 
 except Exception:
     print("Your are Not select properly file ")
