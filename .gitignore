@@ -9,3 +9,6 @@ __pycache__
 /ffmpeg/source_video
 /ffmpeg/test.py
 /ffmpeg/venv
+/frame_video/video
+/frame_video/video_frame
+/frame_video/frame_video
