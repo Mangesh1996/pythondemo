@@ -2,6 +2,8 @@
 Converting the video to  frame by handling user
 user can chosse the source path and save path
 
+link to download ffmpeg :-  https://github.com/sidneys/ffmpeg-progressbar-cli#installation
+
 """
 # import the libary to necessary
 import os
