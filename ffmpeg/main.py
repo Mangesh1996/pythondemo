@@ -32,9 +32,9 @@ try:
     save_path=filedialog.askdirectory(title="Select Folder to save frames")
     #run the command using os.system 
     start =time.time()
-    for i in tqdm(range(1),desc="Loading...."):
-        os.system(f"ffmpeg -i {sourcepath} -vf fps={user_fps} {save_path}/img-%03d.jpg -loglevel quiet")#ffmped are convert video to frame
-        sleep(0.01)
+    
+    os.system(f"ffmpeg-bar -i {sourcepath} -vf fps={user_fps} {save_path}/img-%03d.jpg ")#ffmped are convert video to frame
+    
     end=time.time()
     print("\n")
     print("Video to frame converting done ")
