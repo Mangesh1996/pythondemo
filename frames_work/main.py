@@ -10,8 +10,9 @@ import os
 from glob import glob
 from time import sleep
 import time
-import sys
+from tqdm import tqdm
 from frame_count import frame_count
+import datetime
 
 #making the function for creating direactory
 def createdire(path):
@@ -27,9 +28,8 @@ def genarate_frame(path,save_path,gap):
             save_path=os.path.join(save_path,name) # define the path of saving 
           
             createdire(save_path)# call the function for create the save direactory
-            for z in range(21):
-                  sleep(1.0)
-                  sys.stdout.write("\r")
+            for i in tqdm(range(1),desc="Loading...."):
+                  
                   start=time.time()
                   cap=cv2.VideoCapture(path)
                   idx=0
@@ -38,21 +38,18 @@ def genarate_frame(path,save_path,gap):
                         if res == False:
                               cap.release()
                               break
-                        if idx ==0:
-                              cv2.imwrite(f"{save_path}/{idx}.jpg",frame)
+
                         else:
-                              if idx % gap == 0:
-                                    cv2.imwrite(f"{save_path}/{idx}.jpg",frame)
+                              cv2.imwrite(f"{save_path}/{idx}.jpg",frame)
                         idx+=1
                   end=time.time()
             
-                  sys.stdout.write("[%-20s]%d%%" %( "="* z,5*z) )
-            sys.stdout.flush()
-            sleep(0.2)
+                  sleep(0.2)
             print("\n")
             print(f"Video to Frame converting done frame rate is {gap}")
             print("\n")
-            print(round(start-end))
+            sec=end-start
+            print("task complete duration:- ",str(datetime.timedelta(seconds=sec)))
 
 
 if __name__=="__main__":
