@@ -23,7 +23,7 @@ try:
     root = tk.Tk()
     root.withdraw()
     #specifice the file type when user chose the file
-    filetype=(("Mp4 files","*.mp4"),("Window Media Viewer","*.wvm"),("Audio Video Interleave","*.avi"),)
+    filetype=(("Mp4 files","*.mp4"),("Window Media Viewer","*.wvm"),("Audio Video Interleave","*.avi"),("Matroska Multimedia Container","*.mkv"),)
     #make a default path to show user in dialog box
     defalut_path=os.path.join(os.getcwd())
     user_fps=frame_count("source_video/ironmane_fly.mp4")
@@ -31,6 +31,7 @@ try:
     file_path=filedialog.askopenfile(title="Select Video to convert frame",initialdir=defalut_path,filetypes=filetype)
     #select only path name in filedialog box
     sourcepath=file_path.name
+    print(sourcepath)
     #save path in save_path 
     save_path=filedialog.askdirectory(title="Select Folder to save frames")
     #run the command using os.system 
@@ -39,6 +40,8 @@ try:
     cmd = [
     "ffmpeg", "-i", "source_video/ironmane_fly.mp4", "-vf", "fps=1", "frame_dire/img-%03d.jpg",]
     cmd[4]="fps="+str(fp)
+    cmd[2]=sourcepath
+    cmd[5]=save_path+"/img-%03d.jpg"
 
     ff = FfmpegProgress(cmd)
     with tqdm(total=100, position=0, desc="Converting....") as pbar:
