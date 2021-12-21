@@ -42,11 +42,14 @@ try:
     cmd[4]="fps="+str(fp)
     cmd[2]=sourcepath
     cmd[5]=save_path+"/img-%03d.jpg"
-
+    uni=[0,]
     ff = FfmpegProgress(cmd)
     with tqdm(total=100, position=0, desc="Converting....") as pbar:
         for progress in ff.run_command_with_progress():
             pbar.update(progress - pbar.n)
+            uni.insert(1,progress)
+            uni.pop(0)
+            print(uni)
     
     end=time.time()
     print("\n")
