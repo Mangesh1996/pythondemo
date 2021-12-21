@@ -6,6 +6,7 @@ with open("gun_01_163939819008.xml","r")as f:
 bs_data=BeautifulSoup(data,'xml')
 
 name=bs_data.find_all("name")
+print(name[1])
 pose=bs_data.find_all("pose")
 difficult=bs_data.find_all("difficult")
 xmin =bs_data.find_all("xmin")
