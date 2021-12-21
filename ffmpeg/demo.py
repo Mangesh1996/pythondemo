@@ -2,19 +2,20 @@
 Converting the video to  frame by handling user
 user can chosse the source path and save path
 
+Usage : convert video file to image using ffmpeg also add progess bar for user interaction 
+
 """
 # import the libary to necessary
 import os
 import tkinter as tk
-# import cv2
-# import sys
-from time import sleep
 from tkinter import filedialog
 from tqdm import tqdm
 import time
 from frame_count import frame_count
 import datetime
-
+from tqdm import tqdm
+from ffmpeg_progress_yield import FfmpegProgress
+from frame_count import frame_count
 # creating exception to handle error
 try:
     root = tk.Tk()
@@ -32,8 +33,15 @@ try:
     save_path=filedialog.askdirectory(title="Select Folder to save frames")
     #run the command using os.system 
     start =time.time()
-    
-    os.system(f"ffmpeg-bar -i {sourcepath} -vf fps={user_fps} {save_path}/img-%03d.jpg ")#ffmped are convert video to frame
+    fp=frame_count("source_video/ironmane_fly.mp4")
+    cmd = [
+    "ffmpeg", "-i", "source_video/ironmane_fly.mp4", "-vf", "fps=1", "frame_dire/%03d.jpg",]
+    cmd[4]="fps="+str(fp)
+
+    ff = FfmpegProgress(cmd)
+    with tqdm(total=100, position=0, desc="Test") as pbar:
+        for progress in ff.run_command_with_progress():
+            pbar.update(progress - pbar.n)
     
     end=time.time()
     print("\n")
