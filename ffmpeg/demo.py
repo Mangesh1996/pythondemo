@@ -4,6 +4,8 @@ user can chosse the source path and save path
 
 Usage : convert video file to image using ffmpeg also add progess bar for user interaction 
 
+github link for ffmpeg_progress_yield :- https://github.com/Tatsh/ffmpeg-progress
+
 """
 # import the libary to necessary
 import os
@@ -35,11 +37,11 @@ try:
     start =time.time()
     fp=frame_count("source_video/ironmane_fly.mp4")
     cmd = [
-    "ffmpeg", "-i", "source_video/ironmane_fly.mp4", "-vf", "fps=1", "frame_dire/%03d.jpg",]
+    "ffmpeg", "-i", "source_video/ironmane_fly.mp4", "-vf", "fps=1", "frame_dire/img-%03d.jpg",]
     cmd[4]="fps="+str(fp)
 
     ff = FfmpegProgress(cmd)
-    with tqdm(total=100, position=0, desc="Test") as pbar:
+    with tqdm(total=100, position=0, desc="Converting....") as pbar:
         for progress in ff.run_command_with_progress():
             pbar.update(progress - pbar.n)
     
