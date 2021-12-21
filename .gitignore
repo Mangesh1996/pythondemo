@@ -15,3 +15,4 @@ __pycache__
 /ffmpeg/.vscode
 /frames_work/project.avi
 /ffmpeg/test
+/frame_video/venv/
