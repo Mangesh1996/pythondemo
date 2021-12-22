@@ -17,5 +17,7 @@ __pycache__
 /ffmpeg/test
 /frame_video/venv/
 /extrac_valuetoxml/venv
-
+/copy_files/save_files
+/copy_files/source_file
+/copy_files/venv
 
