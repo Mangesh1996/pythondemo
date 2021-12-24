@@ -1,6 +1,15 @@
+"""
+Converting Video to image 
+
+usage:- add souce file and define destation directory
+
+"""
+
+#import os and glob
 import os
 from glob import glob
 
+#making the function if save path not present 
 def create_dir(save_path):
     try:
         if not os.path.exists(save_path):
@@ -8,7 +17,7 @@ def create_dir(save_path):
     except OSError:
         print(f"Error : creating directory with name {save_path}")
 
-
+#this function are convert video to frame 
 def save_frame(video_path,save_dir):
     video_paths=glob(video_path+"/*")
 
