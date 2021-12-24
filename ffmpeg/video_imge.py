@@ -23,17 +23,18 @@ def save_frame(video_path,save_dir):
 
     for path in video_paths:
         video_path="".join(path)
-        print(video_path)
+        
         name=path.split("/")[-1].split(".mp4")[0]
-        #save_path=os.path.join(save_dir,name)
+        print(name)
+        save_path=os.path.join(save_dir,name)
+        
         create_dir(save_dir)
         fp="fps=1,scale=1280:720"
         os.system(f"ffmpeg -i {video_path} -vf fps={fp} {save_dir}/img-%03d.jpg -loglevel quiet")
-    return "done"
 
 if __name__=="__main__":
-    video_paths="/home/diycam/Desktop/video/4video"
-    save_dir="save/4_video"
+    video_paths="source_path/4video"
+    save_dir="save/4_test"
     save_frame(video_paths,save_dir)
 
         
