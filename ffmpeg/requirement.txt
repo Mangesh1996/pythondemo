@@ -1,0 +1,11 @@
+ffmpeg-progress-yield==0.2.0
+ffmpeg-python==0.2.0
+future==0.18.2
+numpy==1.19.5
+opencv-python==4.5.4.60
+pkg_resources==0.0.0
+progressbar==2.5
+progressbar2==3.55.0
+python-utils==2.6.3
+six==1.16.0
+tqdm==4.62.3

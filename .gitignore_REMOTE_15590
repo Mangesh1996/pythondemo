@@ -1,0 +1,26 @@
+/venv
+__pycache__
+/parameterchange/store
+/sortingfiles/source
+/frames_work/save_frame
+/frames_work/source_video
+/frames_work/venv
+/ffmpeg/frame_dire
+/ffmpeg/source_video
+/ffmpeg/test.py
+/ffmpeg/venv
+/frame_video/video
+/frame_video/video_frame
+/frame_video/frame_video
+/ffmpeg/.vscode
+/frames_work/project.avi
+/ffmpeg/test
+/frame_video/venv/
+<<<<<<< HEAD
+/extrac_valuetoxml/venv
+/copy_files/save_files
+/copy_files/source_file
+/copy_files/venv
+
+=======
+>>>>>>> 2cf4081a34fb894ba6306f7f88935106acbf45f5
