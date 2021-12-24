@@ -17,7 +17,7 @@ def save_frame(video_path,save_dir):
         print(video_path)
         name=path.split("/")[-1].split(".mp4")[0]
         save_path=os.path.join(save_dir,name)
-        create_dir(save_path)
+        create_dir(save_dir)
         fp="fps=1,scale=1280:720"
         os.system(f"ffmpeg -i {video_path} -vf fps={fp} {save_path}/img-%03d.jpg -loglevel quiet")
 
