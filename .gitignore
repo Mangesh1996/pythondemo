@@ -17,3 +17,4 @@ __pycache__
 /ffmpeg/test
 /frame_video/venv/
 /ffmpeg/source_path
+/ffmpeg/save
