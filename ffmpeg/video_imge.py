@@ -29,10 +29,11 @@ def save_frame(video_path,save_dir):
         create_dir(save_dir)
         fp="fps=1,scale=1280:720"
         os.system(f"ffmpeg -i {video_path} -vf fps={fp} {save_dir}/img-%03d.jpg -loglevel quiet")
+    return "done"
 
 if __name__=="__main__":
-    video_paths="source_path"
-    save_dir="save"
+    video_paths="/home/diycam/Desktop/video/4video"
+    save_dir="save/4_video"
     save_frame(video_paths,save_dir)
 
         
