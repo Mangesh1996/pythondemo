@@ -5,37 +5,62 @@ usage:- add souce file and define destation directory
 
 """
 
-#import os and glob
-import os
-from glob import glob
 
 #making the function if save path not present 
-def create_dir(save_path):
+import os
+from tqdm import tqdm
+import time
+from frame_count import frame_count
+import datetime
+from tqdm import tqdm
+from ffmpeg_progress_yield import FfmpegProgress
+from glob import glob
+
+def make_dri(path):
     try:
-        if not os.path.exists(save_path):
-            os.makedirs(save_path)
+        if os.path.exists(path):
+            print("path already present")
+        else:
+            os.makedirs(path)
     except OSError:
-        print(f"Error : creating directory with name {save_path}")
+        print(f"directory not crater {path}")
 
-#this function are convert video to frame 
-def save_frame(video_path,save_dir):
-    video_paths=glob(video_path+"/*")
-
-    for path in video_paths:
-        video_path="".join(path)
-        
+def convert_img(source_path,save_path):
+    source=glob(source_path+"/*")
+    for i,path in enumerate(source):
         name=path.split("/")[-1].split(".mp4")[0]
         print(name)
-        save_path=os.path.join(save_dir,name)
         
-        create_dir(save_dir)
-        fp="fps=1,scale=1280:720"
-        os.system(f"ffmpeg -i {video_path} -vf fps={fp} {save_dir}/img-%03d.jpg -loglevel quiet")
+        save=os.path.join(save_path,name)
+        # make_dri(save)
+        
+        # # # os.system(f"ffmpeg -i {path} -vf fps=1 {save}/img-%03d.jpg")
+        # os.system(f"ffmpeg -i {path} -vf fps=1 {save_path}/img{i}-%05d.jpg")
+        start = time.time()
+        cmd = [
+        "ffmpeg", "-i", "source_video/ironmane_fly.mp4", "-vf", "fps=1", "frame_dire/img-%03d.jpg", ]
+        
+        cmd[2] = path
+        cmd[5] = save_path+f"/img{i}-%03d.jpg"
+        uni = [0,]
+        ff = FfmpegProgress(cmd)
+        with tqdm(total=100, position=0, desc="Converting....") as pbar:
+            for progress in ff.run_command_with_progress():
+                pbar.update(progress - pbar.n)
+                uni.insert(1, progress)
+                uni.pop(0)
+                print(uni)
+
+        end = time.time()
+        print("\n")
+        print("Video to frame converting done ")
+        sec = end-start
+        print("task complete duration:- ", str(datetime.timedelta(seconds=sec)))
+
 
 if __name__=="__main__":
-    video_paths="source_path/4video"
-    save_dir="save/4_test"
-    save_frame(video_paths,save_dir)
-
+    source_path="source_path/iron"
+    save="save/"
+    convert_img(source_path,save)
         
     
