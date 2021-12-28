@@ -25,13 +25,10 @@ __pycache__
 /copy_files/save_files
 /copy_files/source_file
 /copy_files/venv
-
-=======
->>>>>>> 2cf4081a34fb894ba6306f7f88935106acbf45f5
->>>>>>> main
-
 /test/*
 /youtub_downloader/save_path
 /yoututb_downloader/test.py
 /youtub_downloader/demo.py
-/youtub_downloader/venv
+/youtub_downloader/venv/*
+/youtub_downloader/demo/*
+/youtub_downloader/test.py
