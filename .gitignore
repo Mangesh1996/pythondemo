@@ -31,3 +31,6 @@ __pycache__
 >>>>>>> main
 
 /test/*
+/youtub_downloader/save_path
+/yoututb_downloader/test.py
+/youtub_downloader/demo.py
