@@ -24,13 +24,9 @@ __pycache__
 /extrac_valuetoxml/venv
 /copy_files/save_files
 /copy_files/source_file
-/copy_files/venv
+/copy_files/ven
 /test/*
 /youtub_downloader/save_path
 /yoututb_downloader/test.py
 /youtub_downloader/demo.py
-/youtub_downloader/venv/*
-/youtub_downloader/demo/*
-/youtub_downloader/test.py
-/youtub_downloader/video_image
-
+/youtub_downloader/venv
