@@ -33,4 +33,7 @@ __pycache__
 /youtub_downloader/demo/*
 /youtub_downloader/test.py
 /youtub_downloader/video_image
+/image_scraping/images
+/image_scraping/save
+/image_scraping/vevn
 
