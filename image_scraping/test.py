@@ -11,9 +11,9 @@ import webdriver_manager
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import ElementClickInterceptedException, ElementNotInteractableException
 
-# opts=webdriver.ChromeOptions()
-# opts.headless=True
-driver=webdriver.Chrome(ChromeDriverManager().install())
+opts=webdriver.ChromeOptions()
+opts.headless=True
+driver=webdriver.Chrome(ChromeDriverManager().install(),options=opts)
 
 
 def scroll_to_end(driver):
@@ -32,26 +32,37 @@ def getImageUrls(name,totalimage,driver):
         totalresults=len(thumbnail_result)
         print(f"Found: {totalresults} search result , Extracting line from {result_start}:{totalresults}")
         for img in thumbnail_result[result_start:totalresults]:
-            img.click()
+            while True:
+                try:
+                    img.click()
+                    break
+                except Exception as e:
+                    print(e)
+                    time.sleep(2)
             time.sleep(2)
-            actual_images=driver.find_elements_by_css_selector('img.n3VNCb')
+            actual_images=driver.find_elements_by_css_selector('img.Q4LuWd')
             for actual_image in actual_images:
                 if actual_image.get_attribute('src') and 'https' in actual_image.get_attribute('src'):
+
                     img_urls.add(actual_image.get_attribute('src'))
+        
             img_count=len(img_urls)
             if img_count >= totalimage:
-                # if img_count % 20 ==0:
-                #     continue
                 print(f"Found : {img_count} image links")
                 break
             else:
                 print("Found: ",img_count,"Looking for more image links ...")
                 load_more_button=driver.find_element_by_css_selector(".mye4qd")
                 driver.execute_script("document.querySelector('.mye4qd').click();")
-                
-                result_start=len(thumbnail_result)
+        
+                    
+            result_start=len(thumbnail_result)
+        temp=len(img_urls) - totalimage
+        for i in range(temp):
+            img_urls.pop()
+        print(len(img_urls))
     return img_urls
-# getImageUrls("cat",10,driver)
+# print(getImageUrls("dogs",100,driver))
 
 def downloadImages(folder_path,file_name,url):
     try:
@@ -84,9 +95,13 @@ def saveInDestFolder(searchname,destdir,totalImage,driver):
                 file_name=f"{i+1}.jpg"
                 downloadImages(path,file_name,link)
 
-searchNames=['Person'] 
-destDir=f'save'
-totalImgs=300
+if __name__=="__main__":
+    search=input("Enter the google keywords:- ")
+
+
+    searchNames=[search]
+    destDir=f'save'
+    totalImgs=100
 
 saveInDestFolder(searchNames,destDir,totalImgs,driver)
 
