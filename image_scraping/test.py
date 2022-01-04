@@ -18,7 +18,7 @@ driver=webdriver.Chrome(ChromeDriverManager().install(),options=opts)
 
 def scroll_to_end(driver):
     driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
-    time.sleep(2)
+    time.sleep(5)
 
 def getImageUrls(name,totalimage,driver):
     search_url="https://www.google.com/search?q={q}&client=opera&hs=tDE&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiCnv-R_or1AhUNE4gKHaTLAVkQ_AUoAXoECAEQAw&biw=1813&bih=952&dpr=1"
@@ -38,7 +38,7 @@ def getImageUrls(name,totalimage,driver):
                     break
                 except Exception as e:
                     print(e)
-                    time.sleep(2)
+                    time.sleep(5)
             time.sleep(2)
             actual_images=driver.find_elements_by_css_selector('img.Q4LuWd')
             for actual_image in actual_images:
@@ -100,8 +100,9 @@ if __name__=="__main__":
 
 
     searchNames=[search]
+
     destDir=f'save'
-    totalImgs=100
+    totalImgs=int(input("Enter the number to Image scrap:- "))
 
 saveInDestFolder(searchNames,destDir,totalImgs,driver)
 
