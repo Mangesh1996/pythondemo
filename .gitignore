@@ -36,5 +36,7 @@ __pycache__
 /image_scraping/images
 /image_scraping/save
 /image_scraping/venv
-/image_bondingBox_change/
+/image_bondingBox_change/venv
+/image_bondingBox_change/images
+/image_bondingBox_change/__pycache__
 /road_line/
