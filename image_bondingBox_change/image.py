@@ -1,12 +1,17 @@
+"""
+This python program just convert image resoulation give by user 
+using ffmpeg libarry
 
+usage : image.py  
+
+"""
+#import the libary
 import ffmpeg
 import os
 from glob import glob
 from tqdm import tqdm
-
-
-
-def image_convertion(path,res,save):
+#making the method to convert image resoulation using ffmpeg
+def image_convertion(path,res,save,):
     images=sorted(glob(path+"/*.png"),key=os.path.basename)
     for path in images:
         name=path.split("/")[-1]
@@ -18,8 +23,6 @@ def image_convertion(path,res,save):
                 .overwrite_output()
                 .run(quiet=True)
                 )
-
-
     return "done"       
 if __name__=="__main__":
     path="images"
