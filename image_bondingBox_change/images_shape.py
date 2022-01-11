@@ -1,47 +1,39 @@
 
+import xml.etree.ElementTree as ET
 import cv2 as cv
 from glob import glob
-from bs4 import BeautifulSoup
 import os
 
+def modfiy_xml(path,save):
+    output=sorted(glob(f"{path}/*.xml"))
+    for i in output:
+        xmlroot=ET.parse(i).getroot()
+        images="images"
+        name=i.split("/")[-1].split(".")[0]
+        images=sorted(glob(images+f"/{name}.png"),key=os.path.basename)
+        new_size=[1280,720]
+        for imgs in images:
+            img=cv.imread(imgs)
+            scale_x=new_size[0]/img.shape[1]
+            scale_y=new_size[1]/img.shape[0]
+        sizes_node=xmlroot.find("size")
+        sizes_node.find("width").text=str(new_size[0])
+        sizes_node.find("height").text=str(new_size[1])
+        for member in xmlroot.findall("object"):
+            bndbox=member.find("bndbox")
+            xmin=bndbox.find('xmin') 
+            ymin = bndbox.find('ymin')
+            xmax = bndbox.find('xmax')
+            ymax = bndbox.find('ymax')
+            xmin.text=str(round(int(xmin.text)*scale_x))
+            ymin.text=str(round(int(ymin.text)*scale_y))
+            xmax.text=str(round(int(xmax.text)*scale_x))
+            ymax.text=str(round(int(ymax.text)*scale_y))
 
-def resize(path,new_size):
-    images=sorted(glob(path+"/*.png"),key=os.path.basename)
-    xmls=sorted(glob(path+"/*.xml"),key=os.path.basename)
-    bndbox=[]
-    for img in images:
-        img=cv.imread(img)
-        scale_x=new_size[0]/img.shape[1]
-        scale_y=new_size[1]/img.shape[0]
-        for xml in xmls:
-            with open(xml,"r")as data:
-                read=data.read()
-            bs_data=BeautifulSoup(read,'xml')
-            obj=bs_data.find_all("object")
-            x_min=bs_data.find_all("xmin")
-            y_min=bs_data.find_all("ymin")
-            x_max=bs_data.find_all("xmax")
-            y_max=bs_data.find_all("ymax")
-                
-            for i in range(len(obj)):
-                xmin=int(x_min[i].get_text())
-                ymin=int(y_min[i].get_text())
-                xmax=int(x_max[i].get_text())
-                ymax=int(y_max[i].get_text())
-                new_xmin=round(float(xmin) * scale_x)
-                new_ymin=round(float(ymin) * scale_y)
-                new_xmax=round(float(xmax) * scale_x)
-                new_ymax=round(float(ymax) * scale_y)
-                bndbox.append([new_xmin,new_ymin,new_xmax,new_ymax])
-    return bndbox
-                
+        tree=ET.ElementTree(xmlroot)
 
-            
-        
-
-
-if __name__=="__main__":
+        tree.write(f"{save}/"+name+".xml")
+if __name__ == "__main__":
     images="images"
-    new_res=[1280,720]
-
-    print(resize(images,new_res))
+    save="save"
+    modfiy_xml(images,save)
