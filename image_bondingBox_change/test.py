@@ -1,11 +1,9 @@
-import ffmpeg
+import os
+from glob import glob
 
 
-process=(
-    ffmpeg
-    .input("images/hard_hat_workers0.png")
-    .filter("scale",width=1280,height=720)
-    .output("save/imge.jpg",)
-    .overwrite_output()
-    .run()
-)
+path=os.getcwd()
+file="images"
+filename=os.path.join(path,file)
+name=glob(filename+"/*.xml")
+print(name)

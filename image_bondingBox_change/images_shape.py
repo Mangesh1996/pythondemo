@@ -43,6 +43,8 @@ def modifiy_xml(path,save,new_size):
         tree.write(f"{save}/"+name+".xml")
 if __name__ == "__main__":
     images="images"
+    filename=os.path.join(os.getcwd(),images)
+  
     save="save"
     size=[1280,720]
-    modifiy_xml(images,save,size)
+    modifiy_xml(filename,save,size)

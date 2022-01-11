@@ -6,7 +6,7 @@ usage : main.py
 """
 # import libarayr and create python module
 from image import image_convertion
-from images_shape import modfiy_xml
+from images_shape import modifiy_xml
 import os
 
 # create the method to check output file are preset 
@@ -20,10 +20,13 @@ def run(path,save,res):
     except Exception as e:
         print(e)
     image_convertion(path,res,save)
-    modfiy_xml(path,save,res)
+    modifiy_xml(path,save,res)
 
 if __name__=="__main__":
-    path="images"
-    save="save"
+    source="images"
+    path=os.path.join(os.getcwd(),source)
+    save=input("Create directory the store output:- ")
+    saves=os.path.join(os.getcwd(),save)
     res=[1280,720]
-    run(path,save,res)
+    run(path,saves,res)
+
