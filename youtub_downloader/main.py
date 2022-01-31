@@ -22,8 +22,12 @@ def save_path(download_path):
     except OSError:
         print(f"File not created {download_path}")
 #derivate the save path
-save_path("save_path")
-path=os.path.join(os.getcwd(),"save_path")
+download_path=input("Paster the download path:-   ")
+if download_path =="Default" or download_path=="save":
+    save_path(download_path)
+else:
+    download_path
+path=os.path.join(os.getcwd(),download_path)
 # get the input link
 link=input("Paster the Youtube link:-  ")
 #make the try to handle error
