@@ -17,12 +17,14 @@ def modifiy_xml(path,save,new_size):
         xmlroot=ET.parse(i).getroot()
         images="images"
         name=i.split("/")[-1].split(".")[0]
+        print(name)
         images=sorted(glob(images+f"/{name}.png"),key=os.path.basename)
         # extract the old image resolution using opencv
         for imgs in images:
             img=cv.imread(imgs)
             scale_x=new_size[0]/img.shape[1]
             scale_y=new_size[1]/img.shape[0]
+            print(scale_x,"fro png")
         sizes_node=xmlroot.find("size")
         sizes_node.find("width").text=str(new_size[0])
         sizes_node.find("height").text=str(new_size[1])

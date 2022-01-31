@@ -19,7 +19,7 @@ def run(path,save,res):
             print("Already exists")
     except Exception as e:
         print(e)
-    image_convertion(path,res,save)
+    image_convertion(path,save)
     modifiy_xml(path,save,res)
 
 if __name__=="__main__":

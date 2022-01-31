@@ -8,27 +8,37 @@ usage : image.py
 #import the libary
 import ffmpeg
 import os
+import cv2
 from glob import glob
-from tqdm import tqdm
 #making the method to convert image resoulation using ffmpeg
-def image_convertion(path,res,save,):
-    images=sorted(glob(path+"/*.png"),key=os.path.basename)
+def image_convertion(paths,save):
+    images=sorted(glob(paths+"/*"),key=os.path.basename)
+    exts=('.jpeg', '.JPEG', '.png', '.PNG', '.jpg', '.JPG')
     for path in images:
-        name=path.split("/")[-1]
-        process=(
-                ffmpeg
-                .input(path)
-                .filter("scale",width=res[0],height=res[1])
-                .output(f"{save}/{name}")
-                .overwrite_output()
-                .run(quiet=True)
-                )
-    return "done"       
+        if path.endswith(exts):
+            
+            name=path.split("/")[-1]
+            try:
+                process=(
+                    ffmpeg
+                    .input(path)
+                    .filter("scale",width=1280,height=720)
+                    .output(f"{save}/{name}")
+                    .overwrite_output()
+                    .run(quiet=True)
+                    )
+            except Exception as e:
+                print(e,path)
+                image=cv2.imread(path)
+                size=(1280,720)
+                resize=cv2.resize(image,size)
+                cv2.imwrite(f"{save}/cv_{name}",resize)  
+           
 if __name__=="__main__":
-    path="images"
+    path="/home/diycam/Downloads/hard_hat_dataset"
     save="save"
     resolution=[1280,720]
-    image_convertion(path,resolution,save)
+    image_convertion(path,save)
     
     
     
