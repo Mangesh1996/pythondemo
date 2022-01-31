@@ -1,0 +1,12 @@
+autopep8==1.6.0
+numpy==1.19.5
+opencv-python==4.5.5.62
+pkg_resources==0.0.0
+pycodestyle==2.8.0
+pyt==1.0.5
+pytube==11.0.2
+ruamel.yaml==0.17.20
+ruamel.yaml.clib==0.2.6
+toml==0.10.2
+vext==0.7.6
+vext.gi==0.7.4
