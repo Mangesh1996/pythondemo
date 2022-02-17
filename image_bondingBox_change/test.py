@@ -14,7 +14,6 @@ def modify_xml(path,save,new_size):
     xmls=sorted(glob(f"{path}/*.xml"),key=os.path.basename)
     
     for e in xmls:
-        
         xmlroot=ET.parse(e).getroot()
         name=e.split("/")[-1].split(".")[0]
         size_node=xmlroot.find("size")
@@ -38,9 +37,9 @@ def modify_xml(path,save,new_size):
         tree.write(f"{save}/"+name+".xml")
 
 if __name__ == "__main__":
-    images="/home/diycam/Downloads/hard_hat_dataset"
+    images="/home/diycam/Downloads/fire_template/dataset/annotation_images"
     filename=os.path.join(os.getcwd(),images)
   
-    save="save"
-    size=[1280,720]
+    save="save1"
+    size=[2020,920]
     modify_xml(filename,save,size)
