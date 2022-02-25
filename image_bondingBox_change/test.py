@@ -15,6 +15,7 @@ import os
 import cv2
 import shutil
 from datetime import datetime
+import cv2
 # creat the method to modify the xml file 
 def modify_xml(path,save,new_size):
     xmls=sorted(glob(f"{path}/*.xml"),key=os.path.basename)
@@ -51,7 +52,9 @@ def image_convertion(paths,save,new_size):
     exts=('.jpeg', '.JPEG', '.png', '.PNG', '.jpg', '.JPG')
     for path in images:
         if path.endswith(exts):
-            
+            img=cv2.imread(path)
+            print(img.shape)
+            # print(width,height)           
             name=path.split("/")[-1]
             try:
                 process=(
@@ -100,10 +103,10 @@ if __name__ == "__main__":
     save="temp"
     saves="save"
     size=[2020,920]
-    modify_xml(images,save,size)
+    # modify_xml(images,save,size)
     image_convertion(images,save,size)
-    # # filename=os.path.join(os.getcwd(),images)
-    copy_pair(path,saves)
+    # filename=os.path.join(os.getcwd(),images)
+    # copy_pair(path,saves)
     
     
 

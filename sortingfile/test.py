@@ -23,13 +23,13 @@ for i in png:
     else:
         shutil.copy(os.path.join(files,f"{i}.png"),odd)
 
-# for i in xml:
-#     if i in jpgs:
-#         shutil.copy(os.path.join(files,f"{i}.xml"),pairs)
-#     elif i in png:
-#          shutil.copy(os.path.join(files,f"{i}.xml"),pairs)
+for i in xml:
+    if i in jpgs:
+        shutil.copy(os.path.join(files,f"{i}.xml"),pairs)
+    elif i in png:
+         shutil.copy(os.path.join(files,f"{i}.xml"),pairs)
 
-#     else:
-#         shutil.copy(os.path.join(files,f"{i}.xml"),odd)
+    else:
+        shutil.copy(os.path.join(files,f"{i}.xml"),odd)
 
 
