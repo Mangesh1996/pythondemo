@@ -1,28 +1,43 @@
+'''
+Image scrapping from google image 
+
+usage:- python3 main.py -s {googleseacrh} -p {save_path} -n {number_of_image_downloads}
+
+
+'''
+
 import os
-from re import search
-import selenium
 from selenium import webdriver
 import time
 from PIL import Image
 import io
 import requests
 from webdriver_manager import driver
-import webdriver_manager
+import argparse
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.common.exceptions import ElementClickInterceptedException, ElementNotInteractableException
+
 
 opts=webdriver.ChromeOptions()
 opts.headless=True
-driver=webdriver.Chrome(ChromeDriverManager().install(),options=opts)
+driver=webdriver.Chrome(ChromeDriverManager().install())
 
 
 def scroll_to_end(driver):
     driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
-    time.sleep(2)
+    time.sleep(5)
+
+
+def directory_create(folder_path):
+    try:
+        if os.path.exists(folder_path):
+            print(f"This directoer already exits {folder_path}")
+        else:
+            os.mkdir(folder_path)
+    except OSError:
+        print("Some exception are occured check your permison")
 
 def getImageUrls(name,totalimage,driver):
-    
-    search_url="https://www.google.com/search?q={q}&client=opera&hs=tDE&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiCnv-R_or1AhUNE4gKHaTLAVkQ_AUoAXoECAEQAw&=1908&bih=893"
+    search_url="https://www.google.com/search?q={q}&client=opera&hs=tDE&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiCnv-R_or1AhUNE4gKHaTLAVkQ_AUoAXoECAEQAw&biw=1813&bih=952&dpr=1"
     driver.get(search_url.format(q=name))
     img_urls=set()
     img_count=0
@@ -40,7 +55,7 @@ def getImageUrls(name,totalimage,driver):
                 except Exception as e:
                     print(e)
                     time.sleep(5)
-            time.sleep(5)
+            time.sleep(2)
             actual_images=driver.find_elements_by_css_selector('img.Q4LuWd')
             for actual_image in actual_images:
                 if actual_image.get_attribute('src') and 'https' in actual_image.get_attribute('src'):
@@ -75,12 +90,13 @@ def downloadImages(folder_path,file_name,url):
         image=Image.open(image_file).convert('RGB')
         file_path=os.path.join(folder_path,file_name)
         with open(file_path,"wb")as w:
-            image.save(w,"JPEG",quality=100)
+            image.save(w,"JPEG",quality=85)
         print(f"saved- {url} - AT: {file_path}")
     except Exception as e:
         print(f"ERROR - Could Not save {url} - {e}")
 
 def saveInDestFolder(searchname,destdir,totalImage,driver):
+    directory_create(destdir)
     for name in list(searchname):
         path=os.path.join(destdir,name)
         if not os.path.isdir(path):
@@ -96,13 +112,20 @@ def saveInDestFolder(searchname,destdir,totalImage,driver):
                 file_name=f"{i+1}.jpg"
                 downloadImages(path,file_name,link)
 
+def args_parse():
+    parse=argparse.ArgumentParser()
+    parse.add_argument("-s","--search",nargs="*",help="type the name of image you want to download",required=True)
+    parse.add_argument("-p","--path",help="path the saving path",required=True)
+    parse.add_argument("-n","--n_images",type=int,help="enter of number of images")
+    argument=parse.parse_args()
+    search=argument.search
+    path=argument.path
+    number=argument.n_images
+    saveInDestFolder(search,path,number,driver)
+
+
+
 if __name__=="__main__":
-    search=input("Enter the google keywords:- ")
-
-
-    searchNames=[search]
-    destDir=f'save'
-    totalImgs=150
-
-saveInDestFolder(searchNames,destDir,totalImgs,driver)
+    args_parse()
+    
 
