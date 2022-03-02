@@ -1,17 +1,18 @@
 """
 Download the youtube video multiple resoluation 
-
-usage :- find_resoluation.py and main.py
+find_resoluation.py and main.py
+usage :- python3 main.py -l youtube_link -p dowload_path
 
 """
 #import the libaray
+from ast import arguments
 from genericpath import exists
 from pytube import YouTube
 from time import sleep
 from random import randint
 from find_resoluation import resoulation_find
 import os
-import sys
+import argparse
 
 
 def save_path(download_path):
@@ -20,12 +21,11 @@ def save_path(download_path):
             print("download directory are present")
         else:
             os.mkdir(download_path)
+            print("Direcotry create done")
     except OSError:
-        print(f"File not created {download_path}")
-#derivate the save path
-
-def youtube_download(download_path):
-    link=input("Paster the Youtube link:-  ")
+        print(f"directory not created {download_path}")
+def youtube_download(download_path,links):
+    link=links
     # download_path=input(f"Paster the download path:-   ")
     if download_path =="Default" or download_path=="save":
         save_path(download_path)
@@ -59,7 +59,15 @@ def youtube_download(download_path):
 
     sleep(randint(5,10))
 
+def args_parse():
+    parser=argparse.ArgumentParser()
+    parser.add_argument("-l","--link",help="paste the youtube link",required=True)
+    parser.add_argument("-p","--path",help="set download path",required=True)
+    argument=parser.parse_args()
+    link=argument.link
+    path=argument.path
+    youtube_download(path,link)
+
 
 if __name__ =="__main__":
-    save="save"
-    youtube_download(save)
+    args_parse()
