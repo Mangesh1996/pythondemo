@@ -10,11 +10,18 @@ from genericpath import exists
 from pytube import YouTube
 from time import sleep
 from random import randint
-from find_resoluation import resoulation_find
 import os
 import argparse
 
-
+def resoulation_find(url):
+    yt=YouTube(url)
+    filters=yt.streams.filter(only_video=True,file_extension="mp4",adaptive=True).order_by("resolution")
+    st={i.resolution for i in filters }
+    st=" ".join(st).split("p")[:-1]
+    lsts=[int(i) for i in st ]
+    lsts.sort()
+    resoul=[ f"{i}p" for i in lsts]
+    return resoul
 def save_path(download_path):
     try:
         if os.path.exists(download_path):
