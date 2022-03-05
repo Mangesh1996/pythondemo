@@ -19,7 +19,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 opts=webdriver.ChromeOptions()
 opts.headless=True
-driver=webdriver.Chrome(ChromeDriverManager().install())
+driver=webdriver.Chrome(ChromeDriverManager().install(),options=opts)
 
 
 def scroll_to_end(driver):
@@ -45,6 +45,7 @@ def getImageUrls(name,totalimage,driver):
     while(img_count<totalimage):# extract actual image
         scroll_to_end(driver)
         thumbnail_result=driver.find_elements_by_xpath("//img[contains(@class,'Q4LuWd')]")
+        print("stst",thumbnail_result)
         totalresults=len(thumbnail_result)
         print(f"Found: {totalresults} search result , Extracting line from {result_start}:{totalresults}")
         for img in thumbnail_result[result_start:totalresults]:
