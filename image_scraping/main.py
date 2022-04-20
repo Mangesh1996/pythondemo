@@ -1,132 +1,140 @@
 '''
-Image scrapping from google image 
 
-usage:- python3 main.py -s {googleseacrh} -p {save_path} -n {number_of_image_downloads}
-
+Usage :- python3 main.py -s save -p path -n 5
+args:-
+    -s =search the query
+    -p =save the path name
+    -n = number of images
 
 '''
 
-import os
+
 from selenium import webdriver
 import time
-from PIL import Image
 import io
+from PIL import Image
 import requests
-from webdriver_manager import driver
+import os
+from PIL import Image
+from driver_install import Chromedriver_install
 import argparse
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 
-
-opts=webdriver.ChromeOptions()
-opts.headless=True
-driver=webdriver.Chrome(ChromeDriverManager().install(),options=opts)
-
-
-def scroll_to_end(driver):
-    driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
-    time.sleep(5)
-
-
+opts=Options()
+opts.add_argument("--headless")
 def directory_create(folder_path):
     try:
-        if os.path.exists(folder_path):
-            print(f"This directoer already exits {folder_path}")
+        if os.path.exists(os.path.join(os.getcwd(),folder_path)):
+            print(f"This directory already exist {folder_path}")
         else:
             os.mkdir(folder_path)
     except OSError:
-        print("Some exception are occured check your permison")
-
-def getImageUrls(name,totalimage,driver):
-    search_url="https://www.google.com/search?q={q}&client=opera&hs=tDE&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiCnv-R_or1AhUNE4gKHaTLAVkQ_AUoAXoECAEQAw&biw=1813&bih=952&dpr=1"
-    driver.get(search_url.format(q=name))
-    img_urls=set()
-    img_count=0
-    result_start=0
-    while(img_count<totalimage):# extract actual image
-        scroll_to_end(driver)
-        thumbnail_result=driver.find_elements_by_xpath("//img[contains(@class,'Q4LuWd')]")
-        print("stst",thumbnail_result)
-        totalresults=len(thumbnail_result)
-        print(f"Found: {totalresults} search result , Extracting line from {result_start}:{totalresults}")
-        for img in thumbnail_result[result_start:totalresults]:
-            while True:
-                try:
-                    img.click()
-                    break
-                except Exception as e:
-                    print(e)
-                    time.sleep(5)
-            time.sleep(2)
-            actual_images=driver.find_elements_by_css_selector('img.Q4LuWd')
-            for actual_image in actual_images:
-                if actual_image.get_attribute('src') and 'https' in actual_image.get_attribute('src'):
-
-                    img_urls.add(actual_image.get_attribute('src'))
-        
-            img_count=len(img_urls)
-            if img_count >= totalimage:
-                print(f"Found : {img_count} image links")
+        print("some exception are occured check your permissions")
+    
+def get_url(name,num_img):
+    seach_url=f"https://www.google.com/search?q={name}&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjK8qC8nan2AhWryIsBHRvtCjkQ_AUoAXoECAEQAw&biw=1920&bih=907"
+    
+    #check the driver and install
+    if not os.path.exists(os.path.join(os.getcwd(),"webdriver")):
+        print("enter the block")
+        Chromedriver_install()
+        driver=webdriver.Chrome(executable_path=os.path.join(os.getcwd(),"webdriver/chromedriver"),options=opts)
+    else:
+        driver=webdriver.Chrome(executable_path=os.path.join(os.getcwd(),"webdriver/chromedriver"),options=opts)    
+    driver.get(seach_url)
+    image_url=list()
+    img_count=1
+    missed_count=0
+    indx=1  
+    
+    while num_img >= img_count:
+        try:
+            imgurl=driver.find_element_by_xpath('//*[@id="islrg"]/div[1]/div[%s]/a[1]/div[1]/img'%(str(indx)))
+            imgurl.click()
+            time.sleep(3)
+            missed_count=0
+        except Exception:
+            missed_count +=1
+            if missed_count>10:
+                print("missing")
                 break
-            else:
-                print("Found: ",img_count,"Looking for more image links ...")
-                load_more_button=driver.find_element_by_css_selector(".mye4qd")
-                driver.execute_script("document.querySelector('.mye4qd').click();")
-        
-                    
-            result_start=len(thumbnail_result)
-        temp=len(img_urls) - totalimage
-        for i in range(temp):
-            img_urls.pop()
-        print(len(img_urls))
-    return img_urls
-# print(getImageUrls("dogs",100,driver))
+        try:
+            time.sleep(2)
+            class_names=["n3VNCb"]
+            images = [driver.find_elements_by_class_name(class_name) for class_name in class_names if len(driver.find_elements_by_class_name(class_name)) != 0 ][0]
+            for image in images:
+                src_link=image.get_attribute("src")
+                if (("http" in src_link) and (not "encrypted" in src_link)):
+                    image_url.append(src_link)
+                    # print( img_count,src_link)
+                    img_count+=1     
+                    break
+        except Exception as e:
+            print(e,"not get link")
+        #scroll the page
+        try:
+            if(img_count%3==0):
+                driver.execute_script("window.scrollTo(0,"+str(indx*60)+");")
+            element=driver.find_element_by_class_name|("mye4qd")
+            element.click()
+            print("Load more photos")
+            time.sleep(3)
+        except Exception:
+            time.sleep(1)
+        indx +=1
+    driver.quit()
 
-def downloadImages(folder_path,file_name,url):
-    try:
-        image_content=requests.get(url).content
-    except Exception as e:
-        print(f"Error: Could not Download {url} - {e}")
-    try:
-        image_file=io.BytesIO(image_content)
-        image=Image.open(image_file).convert('RGB')
-        file_path=os.path.join(folder_path,file_name)
-        with open(file_path,"wb")as w:
-            image.save(w,"JPEG",quality=85)
-        print(f"saved- {url} - AT: {file_path}")
-    except Exception as e:
-        print(f"ERROR - Could Not save {url} - {e}")
+    return image_url
+    # print(image_url)
 
-def saveInDestFolder(searchname,destdir,totalImage,driver):
+# get_url("cat",5)
+
+def DownloadImage(folderpath,file_name,url):
+    try:
+        image_content=requests.get(url,stream=True,headers={'User-Agent':'Mozilla/5.0'})
+        if image_content.status_code==200:
+            image_file=io.BytesIO(image_content.content)
+            image=Image.open(image_file).convert('RGB')
+            file_path=os.path.join(folderpath,file_name)
+            with open(file_path,"wb") as w:
+                image.save(w,"JPEG",quality=85)
+            print(f"saved- {url} - AT : {file_path}")
+    except Exception as e:
+        print(f"Error : could not download{url}-{e}")
+
+def saveInDestFolder(searchname,destdir,totalImage):
     directory_create(destdir)
     for name in list(searchname):
         path=os.path.join(destdir,name)
         if not os.path.isdir(path):
             os.mkdir(path)
         print("Current path",path)
-        totallinks=getImageUrls(name,totalImage,driver)
-        print('totalLinks',totallinks)
+        totallinks=get_url(name,totalImage)
         if totallinks is None:
-            print("image not found :-",name)
+            print("image not found :- ",name)
             continue
         else:
-            for i ,link in enumerate(totallinks):
-                file_name=f"{i+1}.jpg"
-                downloadImages(path,file_name,link)
+            for i,link in enumerate(totallinks):
+                file_name=f"{name}_{i+1}.jpg"
+                DownloadImage(path,file_name,link)
 
 def args_parse():
     parse=argparse.ArgumentParser()
-    parse.add_argument("-s","--search",nargs="*",help="type the name of image you want to download",required=True)
+    parse.add_argument("-s","--search",nargs="*",help="type the name of image want to download",required=True)
     parse.add_argument("-p","--path",help="path the saving path",required=True)
-    parse.add_argument("-n","--n_images",type=int,help="enter of number of images")
+    parse.add_argument("-n","--nimages",type=int,help="enter of numerb of images",required=True)
     argument=parse.parse_args()
     search=argument.search
     path=argument.path
-    number=argument.n_images
-    saveInDestFolder(search,path,number,driver)
+    n_img=argument.nimages
+    saveInDestFolder(search,path,n_img)
 
 
 
 if __name__=="__main__":
-    args_parse()
-    
+    # search=["test"]
+    # path="save"
+    # n_img=10
+    # saveInDestFolder(search,path,n_img)
 
+    args_parse()

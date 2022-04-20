@@ -37,7 +37,7 @@ def Chromedriver_install():
         base_driver_url="https://chromedriver.storage.googleapis.com/"
         pattern="https://.*?path=(\d+\.\d+\.\d+\.\d+)"
         filename = "chromedriver_"+os_info()
-        webdrivers=webdriver_path("webdriver")
+        webdriver_path("webdriver")
         # Download of latesst driver
         stream=urllib.request.urlopen(url)
         content=stream.read().decode('utf-8')
@@ -75,5 +75,7 @@ def Chromedriver_install():
     except Exception as e:
         print(e)
     return 0
+
+
 # Chromedriver_install()
 # get_version()
