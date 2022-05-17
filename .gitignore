@@ -44,5 +44,5 @@ __pycache__
 /youtub_downloader/venv/
 /classfication/specs/resnet_18.hdf5
 /classfication/tao-experiments/data
-/classification/dataset_ex.py
-/classification/split_dataset.py
+/classfication/dataset_ex.py
+/classfication/split_dataset.py
