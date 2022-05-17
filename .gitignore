@@ -42,3 +42,7 @@ __pycache__
 /image_bondingBox_change/save/
 /image_bondingBox_change/test.py
 /youtub_downloader/venv/
+/classfication/specs/resnet_18.hdf5
+/classfication/tao-experiments/data
+/classification/dataset_ex.py
+/classification/split_dataset.py
